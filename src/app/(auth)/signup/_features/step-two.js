@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-export const StepTwo = () => {
+export const StepTwo = (asd) => {
   return (
     <div>
       <div className="w-104 gap-6 flex flex-col">
@@ -25,14 +25,14 @@ export const StepTwo = () => {
         </div>
 
         <Input
-          id="input-field-email"
-          type="text"
+          id="input-field-password"
+          type="password"
           placeholder="Password"
           className="shadow-none rounded-md font-inter font-normal text-[14px] text-[#71717A] leading-5 border-[#E4E4E7] w-104 h-9"
         />
         <Input
-          id="input-field-password"
-          type="text"
+          id="input-field-confrim-password"
+          type="password"
           placeholder="Confirm"
           className="shadow-none rounded-md font-inter font-normal text-[14px] text-[#71717A] leading-5 border-[#E4E4E7] w-104 h-9"
         />
@@ -50,7 +50,10 @@ export const StepTwo = () => {
           </Label>
         </div>
 
-        <Button className="bg-[#18181B] opacity-20 rounded-md font-inter font-medium text-[14px] leading-5 text-[#FAFAFA] cursor-pointer w-104 h-9">
+        <Button
+          className="bg-[#18181B] opacity-20 rounded-md font-inter font-medium text-[14px] leading-5 text-[#FAFAFA] cursor-pointer w-104 h-9"
+          onClick={asd.functionNext}
+        >
           Let's Go
         </Button>
         <div className="w-104 h-6 flex gap-3 items-center justify-center">

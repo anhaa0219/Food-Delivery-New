@@ -1,7 +1,7 @@
 import { ArrowLeftIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-export const StepOne = () => {
+export const StepOne = (asd) => {
   return (
     <div>
       <div className="w-104 gap-6 flex flex-col">
@@ -28,7 +28,10 @@ export const StepOne = () => {
           placeholder="Enter your email address"
           className="shadow-none rounded-md font-inter font-normal text-[14px] text-[#71717A] leading-5 border-[#E4E4E7] w-104 h-9"
         />
-        <Button className="bg-[#18181B] opacity-20 rounded-md font-inter font-medium text-[14px] leading-5 text-[#FAFAFA] cursor-pointer w-104 h-9">
+        <Button
+          className="bg-[#18181B] opacity-20 rounded-md font-inter font-medium text-[14px] leading-5 text-[#FAFAFA] cursor-pointer w-104 h-9"
+          onClick={asd.functionNext}
+        >
           Let's Go
         </Button>
         <div className="w-104 h-6 flex gap-3 items-center justify-center">
