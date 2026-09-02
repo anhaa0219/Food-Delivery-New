@@ -1,6 +1,7 @@
 import { ArrowLeftIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 export const LoginForm = () => {
   return (
     <div>
@@ -44,9 +45,12 @@ export const LoginForm = () => {
           <p className="font-inter font-normal text-[16px] text-[#71717A] leading-6">
             Don’t have an account?
           </p>
-          <p className="font-inter font-normal text-[16px] text-[#2563EB] leading-6 cursor-pointer">
+          <Link
+            href="/signup"
+            className="font-inter font-medium text-[14px] text-[#2563EB] hover:underline"
+          >
             Sign up
-          </p>
+          </Link>
         </div>
       </div>
     </div>

@@ -1,60 +1,96 @@
-import { StepOne } from "./_features/step-one";
-import { StepTwo } from "./_features/step-two";
+"use client";
+
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
+import { StepOne } from "./_features/step-one";
+import { StepTwo } from "./_features/step-two";
 
-const passwordSchema = z
-  .string()
-  .min(8, { message: "Password must be at least 8 characters long" })
-  .regex(/[a-z]/, {
-    message: "Password must contain at least one lowercase letter",
+const Schema = z
+  .object({
+    email: z
+      .string()
+      .min(1, { message: "Email is required." })
+      .pipe(z.email({ message: "Invalid email address." })),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters long" })
+      .regex(/[a-z]/, {
+        message: "Password must contain at least one lowercase letter",
+      })
+      .regex(/[A-Z]/, {
+        message: "Password must contain at least one uppercase letter",
+      })
+      .regex(/[0-9]/, { message: "Password must contain at least one number" })
+      .regex(/[^a-zA-Z0-9]/, {
+        message: "Password must contain at least one special character",
+      }),
+    confirmPassword: z
+      .string()
+      .min(1, { message: "Please confirm your password" }),
   })
-  .regex(/[A-Z]/, {
-    message: "Password must contain at least one uppercase letter",
-  })
-  .regex(/[0-9]/, { message: "Password must contain at least one number" })
-  .regex(/[^a-zA-Z0-9]/, {
-    message: "Password must contain at least one special character",
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
   });
-const emailSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "Email is required." })
-    .email({ message: "Invalid email address." }),
-});
 
 export default function SignUp() {
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [email, setEmail] = useState("");
-  const handleSubmitPassword = (e) => {
-    e.preventDefault();
-    const result = passwordSchema.safeParse(password);
+  const [step, setStep] = useState(1);
 
-    if (!result.success) {
-      setError(result.error.errors[0].message);
-    } else {
-      setError("");
-      alert("Password is valid!");
+  const {
+    register,
+    handleSubmit,
+    trigger,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(Schema),
+    mode: "onTouched",
+  });
+
+  const handleNextStep = async () => {
+    const isValid = await trigger(["email"]);
+    if (isValid) {
+      setStep(2);
     }
   };
-  const handleSubmitEmail = (e) => {
-    e.preventDefault();
-    const result = emailSchema.safeParse(email);
 
-    if (!result.success) {
-      setError(result.error.errors[0].message);
-    } else {
-      setError("");
-      alert("Email is valid");
-    }
+  const processForm = async (data) => {
+    console.log("Submitting final data:", data);
+
+    await fetch("/api/form", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+
+    reset();
+    setStep(1);
   };
+
   return (
     <div className="w-full flex items-center justify-center">
-      <StepOne functionNext={(e) => handleSubmitEmail(e)} />
-      <StepTwo functionNext={(e) => handleSubmit(e)} />
+      <form
+        onSubmit={handleSubmit(processForm)}
+        className="w-full max-w-md"
+        noValidate
+      >
+        {step === 1 && (
+          <StepOne
+            register={register}
+            errors={errors}
+            onNext={handleNextStep}
+          />
+        )}
+
+        {step === 2 && (
+          <StepTwo
+            register={register}
+            errors={errors}
+            onBack={() => setStep(1)}
+          />
+        )}
+      </form>
     </div>
   );
 }
