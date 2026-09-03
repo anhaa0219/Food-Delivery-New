@@ -1,8 +1,9 @@
+"use client";
 import { ArrowLeftIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
-export const LoginForm = () => {
+export const LoginForm = (asd) => {
   return (
     <div>
       <div className="w-104 gap-6 flex flex-col">
@@ -39,18 +40,18 @@ export const LoginForm = () => {
           Forgot password ?
         </p>
         <Button className="bg-[#18181B] opacity-20 rounded-md font-inter font-medium text-[14px] leading-5 text-[#FAFAFA] cursor-pointer w-104 h-9">
-          Let's Go
+          Let&apos;s Go
         </Button>
         <div className="w-104 h-6 flex gap-3 items-center justify-center">
           <p className="font-inter font-normal text-[16px] text-[#71717A] leading-6">
             Don’t have an account?
           </p>
-          <Link
-            href="/signup"
-            className="font-inter font-medium text-[14px] text-[#2563EB] hover:underline"
+          <p
+            className="font-inter font-medium text-[14px] text-[#2563EB] hover:underline cursor-pointer"
+            onClick={asd.toSignUp}
           >
             Sign up
-          </Link>
+          </p>
         </div>
       </div>
     </div>

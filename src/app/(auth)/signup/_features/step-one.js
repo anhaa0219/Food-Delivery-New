@@ -1,9 +1,9 @@
+"use client";
 import { ArrowLeftIcon } from "lucide-react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export const StepOne = ({ functionNext, register, errors }) => {
+export const StepOne = ({ functionNext, register, errors, functionLogin }) => {
   return (
     <div>
       <div className="w-104 gap-6 flex flex-col">
@@ -13,11 +13,8 @@ export const StepOne = ({ functionNext, register, errors }) => {
           size="icon"
           aria-label="Back"
           className="rounded-md border-[#E4E4E7] cursor-pointer w-9 h-9"
-          asChild
         >
-          <Link href="/login">
-            <ArrowLeftIcon className="h-4 w-4" />
-          </Link>
+          <ArrowLeftIcon className="h-4 w-4" />
         </Button>
 
         <div className="w-104 flex flex-col gap-1">
@@ -58,12 +55,12 @@ export const StepOne = ({ functionNext, register, errors }) => {
           <p className="font-inter font-normal text-[14px] text-[#71717A]">
             Already have an account?
           </p>
-          <Link
-            href="/login"
-            className="font-inter font-medium text-[14px] text-[#2563EB] hover:underline"
+          <p
+            className="font-inter font-medium text-[14px] text-[#2563EB] hover:underline cursor-pointer"
+            onClick={functionLogin}
           >
             Log in
-          </Link>
+          </p>
         </div>
       </div>
     </div>

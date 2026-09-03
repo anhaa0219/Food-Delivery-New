@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { StepOne } from "./_features/step-one";
 import { StepTwo } from "./_features/step-two";
-
+import { useRouter } from "next/navigation";
 const Schema = z
   .object({
     email: z
@@ -37,7 +37,7 @@ const Schema = z
 
 export default function SignUp() {
   const [step, setStep] = useState(1);
-
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -49,10 +49,16 @@ export default function SignUp() {
     mode: "onTouched",
   });
 
-  const handleNextStep = async () => {
+  const handleNextStepEmail = async () => {
     const isValid = await trigger(["email"]);
     if (isValid) {
       setStep(2);
+    }
+  };
+  const handleNextStepPassword = async () => {
+    const isValid = await trigger(["password"]);
+    if (isValid) {
+      router.push("/login");
     }
   };
 
@@ -67,7 +73,9 @@ export default function SignUp() {
     reset();
     setStep(1);
   };
-
+  const toLogin = () => {
+    router.push("/login");
+  };
   return (
     <div className="w-full flex items-center justify-center">
       <form
@@ -79,7 +87,9 @@ export default function SignUp() {
           <StepOne
             register={register}
             errors={errors}
-            onNext={handleNextStep}
+            onNext={handleNextStepEmail}
+            functionNext={handleNextStepEmail}
+            functionLogin={toLogin}
           />
         )}
 
@@ -88,6 +98,7 @@ export default function SignUp() {
             register={register}
             errors={errors}
             onBack={() => setStep(1)}
+            functionNext={handleNextStepPassword}
           />
         )}
       </form>

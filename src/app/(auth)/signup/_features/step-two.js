@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { ArrowLeftIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 
-export const StepTwo = ({ register, errors, onBack }) => {
+export const StepTwo = ({ register, errors, onBack, functionNext }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -84,6 +83,7 @@ export const StepTwo = ({ register, errors, onBack }) => {
         </div>
 
         <Button
+          onClick={functionNext}
           type="submit"
           className="bg-[#18181B] hover:bg-[#27272a] rounded-md font-inter font-medium text-[14px] leading-5 text-[#FAFAFA] cursor-pointer w-104 h-9"
         >
@@ -94,12 +94,9 @@ export const StepTwo = ({ register, errors, onBack }) => {
           <p className="font-inter font-normal text-[14px] text-[#71717A]">
             Already have an account?
           </p>
-          <Link
-            href="/login"
-            className="font-inter font-medium text-[14px] text-[#2563EB] hover:underline"
-          >
+          <p className="font-inter font-medium text-[14px] text-[#2563EB] hover:underline">
             Log in
-          </Link>
+          </p>
         </div>
       </div>
     </div>
