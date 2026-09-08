@@ -7,6 +7,7 @@ import { z } from "zod";
 import { StepOne } from "./_features/step-one";
 import { StepTwo } from "./_features/step-two";
 import { useRouter } from "next/navigation";
+import { server } from "../../_api/api.js";
 const Schema = z
   .object({
     email: z
@@ -63,15 +64,19 @@ export default function SignUp() {
   };
 
   const processForm = async (data) => {
-    console.log("Submitting final data:", data);
-
-    await fetch("/api/form", {
-      method: "POST",
-      body: JSON.stringify(data),
+    const response = await server.post("/auth/signup", {
+      email: data.email,
+      password: data.password,
     });
+    console.log("response", response.data.user);
 
-    reset();
-    setStep(1);
+    // await fetch("/api/form", {
+    //   method: "POST",
+    //   body: JSON.stringify(data),
+    // });
+    //12345678Ab!
+    // reset();
+    // setStep(1);
   };
   const toLogin = () => {
     router.push("/login");
