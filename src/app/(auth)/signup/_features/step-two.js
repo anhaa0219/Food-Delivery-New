@@ -94,7 +94,7 @@ export const StepTwo = ({ register, errors, onBack, functionNext }) => {
           <p className="font-inter font-normal text-[14px] text-[#71717A]">
             Already have an account?
           </p>
-          <p className="font-inter font-medium text-[14px] text-[#2563EB] hover:underline">
+          <p className="font-inter font-medium text-[14px] text-[#2563EB] hover:underline cursor-pointer">
             Log in
           </p>
         </div>

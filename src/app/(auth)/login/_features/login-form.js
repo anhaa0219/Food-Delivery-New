@@ -1,58 +1,138 @@
 "use client";
+
 import { ArrowLeftIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input";
-export const LoginForm = (asd) => {
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useRouter } from "next/navigation";
+
+const loginSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: "Email is required." })
+    .pipe(z.email({ message: "Invalid email address." })),
+  password: z.string().min(1, { message: "Password is required." }),
+});
+
+export const LoginForm = () => {
+  const router = useRouter();
+  const {
+    register,
+    trigger,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+    mode: "onTouched",
+  });
+
+  const handleNextStep = async () => {
+    const isValid = await trigger(["email", "password"]);
+    if (isValid) {
+      router.push("/");
+    }
+  };
+
+  const handleToSignup = () => {
+    router.push("/signup");
+  };
+
   return (
     <div>
       <div className="w-104 gap-6 flex flex-col">
-        <Button
-          variant="outline"
-          size="icon"
-          aria-label="Submit"
-          className="rounded-md border-[#E4E4E7] cursor-pointer w-9 h-9"
+        <form
+          onSubmit={handleSubmit(handleNextStep)}
+          className="flex flex-col gap-6"
         >
-          <ArrowLeftIcon />
-        </Button>
-        <div className="w-104 h-15 flex flex-col gap-1">
-          <p className="font-inter font-semibold text-[24px] leading-8 text-[#09090B]">
-            Log in
-          </p>
-          <p className="font-inter font-normal text-[16px] leading-8 text-[#71717A]">
-            Log in to enjoy your favorite dishes.
-          </p>
-        </div>
-
-        <Input
-          id="input-field-email"
-          type="text"
-          placeholder="Enter your email address"
-          className="shadow-none rounded-md font-inter font-normal text-[14px] text-[#71717A] leading-5 border-[#E4E4E7] w-104 h-9"
-        />
-        <Input
-          id="input-field-password"
-          type="text"
-          placeholder="Password"
-          className="shadow-none rounded-md font-inter font-normal text-[14px] text-[#71717A] leading-5 border-[#E4E4E7] w-104 h-9"
-        />
-        <p className="font-inter font-normal text-[14px] text-[#18181B] leading-5 cursor-pointer">
-          Forgot password ?
-        </p>
-        <Button className="bg-[#18181B] opacity-20 rounded-md font-inter font-medium text-[14px] leading-5 text-[#FAFAFA] cursor-pointer w-104 h-9">
-          Let&apos;s Go
-        </Button>
-        <div className="w-104 h-6 flex gap-3 items-center justify-center">
-          <p className="font-inter font-normal text-[16px] text-[#71717A] leading-6">
-            Don’t have an account?
-          </p>
-          <p
-            className="font-inter font-medium text-[14px] text-[#2563EB] hover:underline cursor-pointer"
-            onClick={asd.toSignUp}
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            aria-label="Go back"
+            onClick={handleToSignup}
+            className="rounded-md border-[#E4E4E7] cursor-pointer w-9 h-9"
           >
-            Sign up
-          </p>
-        </div>
+            <ArrowLeftIcon className="w-4 h-4" />
+          </Button>
+
+          <div className="w-104 flex flex-col gap-1">
+            <p className="font-inter font-semibold text-[24px] leading-8 text-[#09090B]">
+              Log in
+            </p>
+            <p className="font-inter font-normal text-[16px] leading-6 text-[#71717A]">
+              Log in to enjoy your favorite dishes.
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <Input
+              id="input-field-email"
+              type="email"
+              autoComplete="email"
+              placeholder="Enter your email address"
+              className={`shadow-none rounded-md font-inter font-normal text-[14px] leading-5 border-[#E4E4E7] w-104 h-9 ${
+                errors?.email ? "border-red-500 focus-visible:ring-red-500" : ""
+              }`}
+              {...register("email")}
+            />
+            {errors?.email && (
+              <p className="text-xs font-medium text-red-500">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <Input
+              id="input-field-password"
+              type="password"
+              autoComplete="current-password"
+              placeholder="Password"
+              className={`shadow-none rounded-md font-inter font-normal text-[14px] leading-5 border-[#E4E4E7] w-104 h-9 ${
+                errors?.password
+                  ? "border-red-500 focus-visible:ring-red-500"
+                  : ""
+              }`}
+              {...register("password")}
+            />
+            {errors?.password && (
+              <p className="text-xs font-medium text-red-500">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
+
+          <div className="flex justify-end">
+            <button
+              type="button"
+              className="font-inter font-normal text-[14px] text-[#71717A] hover:text-[#09090B] hover:underline cursor-pointer"
+            >
+              Forgot password?
+            </button>
+          </div>
+
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="bg-[#18181B] hover:bg-[#27272a] rounded-md font-inter font-medium text-[14px] leading-5 text-[#FAFAFA] cursor-pointer w-104 h-9"
+          >
+            Let&apos;s Go
+          </Button>
+
+          <div className="w-104 h-6 flex gap-2 items-center justify-center">
+            <p className="font-inter font-normal text-[14px] text-[#71717A]">
+              Don’t have an account?
+            </p>
+            <p
+              onClick={handleToSignup}
+              className="font-inter font-medium text-[14px] text-[#2563EB] hover:underline cursor-pointer"
+            >
+              Sign up
+            </p>
+          </div>
+        </form>
       </div>
     </div>
   );
