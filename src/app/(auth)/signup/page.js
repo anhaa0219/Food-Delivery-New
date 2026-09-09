@@ -59,24 +59,22 @@ export default function SignUp() {
   const handleNextStepPassword = async () => {
     const isValid = await trigger(["password"]);
     if (isValid) {
-      router.push("/login");
+      router.push("/admin");
     }
   };
 
   const processForm = async (data) => {
-    const response = await server.post("/auth/signup", {
-      email: data.email,
-      password: data.password,
-    });
-    console.log("response", response.data.user);
-
-    // await fetch("/api/form", {
-    //   method: "POST",
-    //   body: JSON.stringify(data),
-    // });
-    //12345678Ab!
-    // reset();
-    // setStep(1);
+    try {
+      //12345678Ab!
+      const response = await server.post("/auth/signup", {
+        email: data.email,
+        password: data.password,
+      });
+      console.log("response", response.data.user);
+      localStorage.setItem("User", JSON.stringify(response.data.user));
+    } catch (err) {
+      console.log(err);
+    }
   };
   const toLogin = () => {
     router.push("/login");

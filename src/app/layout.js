@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import { Toaster } from "@/components/ui/toast";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col justify-center">
         {children}
+        <Toaster />
       </body>
     </html>
   );

@@ -31,7 +31,7 @@ export const LoginForm = () => {
   const handleNextStep = async () => {
     const isValid = await trigger(["email", "password"]);
     if (isValid) {
-      router.push("/");
+      router.push("/admin");
     }
   };
 
