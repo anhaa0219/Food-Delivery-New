@@ -1,5 +1,7 @@
 export const DishGrid = () => {
   return (
-    <div className="w-full h-142.5 flex flex-col border border-solid border-black"></div>
+    <div className="w-full h-full flex flex-col">
+      <div className="w-full flex flex-col rounded-xl p-5 gap-4 bg-[#FFFFFF]"></div>
+    </div>
   );
 };
