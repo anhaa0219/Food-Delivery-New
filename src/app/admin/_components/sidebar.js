@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 export const Sidebar = ({ setState, state }) => {
   return (
-    <div className="h-screen w-51.25 flex flex-col gap-10 py-9 px-5 bg-[#FFFFFF]">
+    <div className="h-full w-51.25 flex flex-col gap-10 py-9 px-5 bg-[#FFFFFF]">
       <div className="w-41.25 h-11 flex gap-2">
         <NomnomLogo />
         <div className="flex flex-col w-20.25 h-11">
