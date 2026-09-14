@@ -9,7 +9,7 @@ export default function Admin() {
   const second = state === 2;
 
   return (
-    <div className="flex min-h-full w-full bg-[#F4F4F5]">
+    <div className="flex min-h-screen w-full bg-[#F4F4F5]">
       <Sidebar setState={setState} state={state} />
       {first && <Dishes />}
       {second && <Orders />}

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { server } from "@/app/_api/api";
 import { Plus } from "lucide-react";
 import { X } from "lucide-react";
+const  NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="kenshi_is_beast"
 export const DishGrid = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -21,6 +22,7 @@ export const DishGrid = () => {
   //     setLoading(false);
   //   }
   // };
+ 
   const foodCategoryGet = async () => {
     try {
       const response = await server.get("/foodCategory/get");
@@ -64,9 +66,9 @@ export const DishGrid = () => {
   useEffect(() => {
     foodCategoryGet();
   }, []);
-  useEffect(() => {
-    dishesGet();
-  }, []);
+  // useEffect(() => {
+  //   dishesGet();
+  // }, []);
   console.log(category, "data");
   const plusHandler = () => {
     setPlus(true);
