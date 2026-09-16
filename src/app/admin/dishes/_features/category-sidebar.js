@@ -79,7 +79,7 @@ export const CategorySideBar = () => {
       console.log(err);
     }
   };
-
+  console.log(data);
   if (loading) {
     return <div className="p-6">Loading categories...</div>;
   }
@@ -137,7 +137,7 @@ export const CategorySideBar = () => {
               {cat.categoryName}
             </p>
             <div className="h-5 rounded-full bg-[#18181B] py-0.5 px-2.5 font-inter font-semibold text-[12px] leading-4 text-[#FAFAFA]">
-              1
+              {cat.dishesCount}
             </div>
           </div>
         ))}
