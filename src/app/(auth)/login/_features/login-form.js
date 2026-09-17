@@ -31,21 +31,25 @@ export const LoginForm = () => {
   const handleNextStep = async () => {
     const isValid = await trigger(["email", "password"]);
     if (isValid) {
-      router.push("/main");
+      router.push("/admin");
     }
   };
 
   const handleToSignup = () => {
     router.push("/signup");
   };
+  const handleToAdmin = () => {
+    router.push("/admin");
+  }
+
   const processForm = async (data) => {
     try {
       const response = await server.post("/auth/login", {
         email: data.email,
         password: data.password,
       });
-      console.log("userDataLogin", response.data.user);
-      localStorage.setItem("UserLogin", JSON.stringify(response.data.user));
+      localStorage.setItem("token",response.data.token);
+      localStorage.setItem("user",JSON.stringify(response.data.user));
       handleNextStep();
     } catch (err) {
       console.log(err);
@@ -63,7 +67,7 @@ export const LoginForm = () => {
             variant="outline"
             size="icon"
             aria-label="Go back"
-            onClick={handleToSignup}
+            onClick={handleToAdmin}
             className="rounded-md border-[#E4E4E7] cursor-pointer w-9 h-9"
           >
             <ArrowLeftIcon className="w-4 h-4" />
