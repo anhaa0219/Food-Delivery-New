@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-
+import { server } from "@/app/_api/api";
 const loginSchema = z.object({
   email: z
     .string()
@@ -31,19 +31,31 @@ export const LoginForm = () => {
   const handleNextStep = async () => {
     const isValid = await trigger(["email", "password"]);
     if (isValid) {
-      router.push("/admin");
+      router.push("/main");
     }
   };
 
   const handleToSignup = () => {
     router.push("/signup");
   };
-
+  const processForm = async (data) => {
+    try {
+      const response = await server.post("/auth/login", {
+        email: data.email,
+        password: data.password,
+      });
+      console.log("userDataLogin", response.data.user);
+      localStorage.setItem("UserLogin", JSON.stringify(response.data.user));
+      handleNextStep();
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div>
       <div className="w-104 gap-6 flex flex-col">
         <form
-          onSubmit={handleSubmit(handleNextStep)}
+          onSubmit={handleSubmit(processForm)}
           className="flex flex-col gap-6"
         >
           <Button

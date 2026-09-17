@@ -65,13 +65,12 @@ export default function SignUp() {
 
   const processForm = async (data) => {
     try {
-      //12345678Ab!
       const response = await server.post("/auth/signup", {
         email: data.email,
         password: data.password,
       });
-      console.log("response", response.data.user);
-      localStorage.setItem("User", JSON.stringify(response.data.user));
+      console.log("UserDataSignup", response.data.user);
+      localStorage.setItem("SignUpUser", JSON.stringify(response.data.user));
     } catch (err) {
       console.log(err);
     }
