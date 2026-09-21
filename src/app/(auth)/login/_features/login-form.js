@@ -30,8 +30,18 @@ export const LoginForm = () => {
 
   const handleNextStep = async () => {
     const isValid = await trigger(["email", "password"]);
+    const roleDecider = localStorage.getItem("user");
+
+    const parsedData = JSON.parse(roleDecider);
+
     if (isValid) {
-      router.push("/admin");
+      if (parsedData.role === "admin") {
+        router.push("/admin");
+        console.log("admin");
+      } else {
+        router.push("/main");
+        console.log("admin");
+      }
     }
   };
 
@@ -40,7 +50,7 @@ export const LoginForm = () => {
   };
   const handleToAdmin = () => {
     router.push("/admin");
-  }
+  };
 
   const processForm = async (data) => {
     try {
@@ -48,8 +58,8 @@ export const LoginForm = () => {
         email: data.email,
         password: data.password,
       });
-      localStorage.setItem("token",response.data.token);
-      localStorage.setItem("user",JSON.stringify(response.data.user));
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
       handleNextStep();
     } catch (err) {
       console.log(err);

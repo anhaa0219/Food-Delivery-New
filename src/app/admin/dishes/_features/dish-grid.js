@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import { server } from "@/app/_api/api";
 import { Plus } from "lucide-react";

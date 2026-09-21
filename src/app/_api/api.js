@@ -7,8 +7,9 @@ export const server = axios.create({
   },
 });
 
-server.interceptors.request.use((config)=>{
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+server.interceptors.request.use((config) => {
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
   config.headers.Authorization = token ? `Bearer ${token}` : null;
   return config;
-})
+});
