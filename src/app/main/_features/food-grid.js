@@ -38,7 +38,17 @@ export const FoodGrid = () => {
 
   const getAddToCart = (dish) => {
     const existingDishes = JSON.parse(localStorage.getItem("CartDishes")) || [];
-    existingDishes.push(dish);
+
+    const existingIndex = existingDishes.findIndex(
+      (item) => item._id === dish._id,
+    );
+
+    if (existingIndex > -1) {
+      existingDishes[existingIndex].number += dish.number;
+    } else {
+      existingDishes.push(dish);
+    }
+
     localStorage.setItem("CartDishes", JSON.stringify(existingDishes));
   };
 
@@ -110,7 +120,7 @@ export const FoodGrid = () => {
                     onClick={(e) => {
                       e.preventDefault();
                       notification();
-                      getAddToCart(dish);
+                      getAddToCart({ ...dish, number: number });
                     }}
                     className="w-9 h-9 rounded-full bg-white flex items-center justify-center cursor-pointer absolute bottom-26 right-6 shadow-md"
                   >
@@ -177,7 +187,7 @@ export const FoodGrid = () => {
                 </div>
                 <div
                   onClick={() => {
-                    getAddToCart({ ...selectedDish, count: number });
+                    getAddToCart({ ...selectedDish, number: number });
                     notification();
                     setSelectedDish(null);
                     setNumber(1);
