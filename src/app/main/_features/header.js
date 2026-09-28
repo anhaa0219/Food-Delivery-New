@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { ShoppingCart, X, Minus, PlusIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { server } from "@/app/_api/api";
 
 export const Header = () => {
   const router = useRouter();
@@ -73,7 +74,49 @@ export const Header = () => {
   );
   const shipping = subtotal > 0 ? 0.99 : 0;
   const total = subtotal + shipping;
+  const handleCheckout = async () => {
+    if (localData.length === 0) return alert("Your cart is empty!");
+    if (!adressSave) {
+      alert("Please add a delivery address!");
+      setAdress(true);
+      return;
+    }
 
+   
+    const userString = localStorage.getItem("user");
+    if (!userString) {
+      alert("You must be logged in to place an order.");
+      jumpToLogin(); 
+      return;
+    }
+
+    
+    const userid = JSON.parse(userString);
+
+    const orderPayload = {
+      user: userid._id, 
+      totalPrice: total,
+      address: adressSave,
+      foodOrderItems: localData.map((item) => ({
+        food: item._id || item.id, 
+        quantity: item.number || 1 
+      }))
+    };
+
+    try {
+      const response = await server.post("/order/post", orderPayload);
+
+      if (response.status === 201 || response.status === 200) {
+        alert("Order placed successfully!");
+        setLocalData([]);
+        localStorage.removeItem("CartDishes");
+        setSectionCart(false);
+      }
+    } catch (error) {
+      console.error("Error submitting order:", error);
+      alert(error.response?.data?.message || "Failed to place order.");
+    }
+  };
   return (
     <div className="w-full h-17 flex items-center justify-between py-3 px-22 bg-[#18181B]">
       <div className="w-36.5 h-11 flex gap-3">
@@ -313,7 +356,7 @@ export const Header = () => {
                   ${total.toFixed(2)}
                 </p>
               </div>
-              <div className="w-full h-11 rounded-full bg-[#EF4444] flex justify-center items-center font-inter font-medium leading-5 text-[14px] text-[#FAFAFA] cursor-pointer hover:bg-red-600 transition-colors">
+              <div onClick={handleCheckout} className="w-full h-11 rounded-full bg-[#EF4444] flex justify-center items-center font-inter font-medium leading-5 text-[14px] text-[#FAFAFA] cursor-pointer hover:bg-red-600 transition-colors">
                 Checkout
               </div>
             </div>

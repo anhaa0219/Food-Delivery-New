@@ -5,8 +5,8 @@ import { createContext, useContext, useState } from "react";
 const Context = createContext(null);
 export const Provider = ({ children }) => {
   const [user, setUser] = useState(null);
-
-  return <Context.Provider value={{ user }}>{children}</Context.Provider>;
+  const [success,setSuccess] = useState(false)
+  return <Context.Provider value={{ user ,success}}>{children}</Context.Provider>;
 };
 export const useAuth = () => {
   const context = useContext(Context);
