@@ -4,9 +4,8 @@ import React, { useState, useEffect } from "react";
 import { server } from "@/app/_api/api";
 import { format, addDays } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-
 import { Calendar } from "@/components/ui/calendar";
-// Button import removed as it is no longer needed for the PopoverTrigger
+
 import {
   Popover,
   PopoverContent,
@@ -16,7 +15,8 @@ import {
 export default function Orders() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-
+  const [status, setStatus] = useState("");
+  const [displayStatus, setDisplayStatus] = 1;
   const [date, setDate] = useState({
     from: new Date(),
     to: addDays(new Date(), 20),
@@ -26,11 +26,11 @@ export default function Orders() {
     try {
       setLoading(true);
       const response = await server.get("/order/get");
-      // Safety fallback: if response.data.orders is undefined, it becomes an empty array
+
       setData(response.data.orders || []);
     } catch (err) {
       console.log(err);
-      setData([]); // Ensure it stays an array on error
+      setData([]);
     } finally {
       setLoading(false);
     }
@@ -39,7 +39,13 @@ export default function Orders() {
   useEffect(() => {
     getDataFromOrders();
   }, []);
-
+  const updateDataFromOrders = async () => {
+    try {
+      const response = await server.put("/order/put");
+    } catch (err) {
+      console.log(err);
+    }
+  };
   console.log(data);
 
   if (loading) {
@@ -64,7 +70,6 @@ export default function Orders() {
 
             <div className="flex gap-3">
               <Popover>
-                {/* FIX 1: Removed asChild and inner <Button>, styled the Trigger directly */}
                 <PopoverTrigger
                   id="date"
                   className="w-[300px] h-9 rounded-full border border-solid border-[#E4E4E7] bg-white flex items-center justify-start px-4 font-normal text-[#09090B] hover:bg-gray-50 transition-colors"
@@ -119,7 +124,6 @@ export default function Orders() {
           </div>
 
           <div className="w-full flex flex-col bg-white">
-            {/* FIX 2: Safely check if data is an array before mapping */}
             {!Array.isArray(data) || data.length === 0 ? (
               <div className="p-8 text-center text-[#71717A]">
                 No orders found.
