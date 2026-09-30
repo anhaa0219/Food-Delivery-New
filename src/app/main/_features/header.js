@@ -82,27 +82,26 @@ export const Header = () => {
       return;
     }
 
-   
     const userString = localStorage.getItem("user");
     if (!userString) {
       alert("You must be logged in to place an order.");
-      jumpToLogin(); 
+      jumpToLogin();
       return;
     }
 
-    
     const userid = JSON.parse(userString);
 
     const orderPayload = {
-      user: userid._id, 
+      user: userid._id,
       totalPrice: total,
       address: adressSave,
       foodOrderItems: localData.map((item) => ({
-        food: item._id || item.id, 
-        quantity: item.number || 1 
-      }))
+        food: item._id || item.id,
+        quantity: item.number || 1,
+      })),
+      status: "PENDING",
     };
-
+    console.log("orderPayload", orderPayload);
     try {
       const response = await server.post("/order/post", orderPayload);
 
@@ -356,7 +355,10 @@ export const Header = () => {
                   ${total.toFixed(2)}
                 </p>
               </div>
-              <div onClick={handleCheckout} className="w-full h-11 rounded-full bg-[#EF4444] flex justify-center items-center font-inter font-medium leading-5 text-[14px] text-[#FAFAFA] cursor-pointer hover:bg-red-600 transition-colors">
+              <div
+                onClick={handleCheckout}
+                className="w-full h-11 rounded-full bg-[#EF4444] flex justify-center items-center font-inter font-medium leading-5 text-[14px] text-[#FAFAFA] cursor-pointer hover:bg-red-600 transition-colors"
+              >
                 Checkout
               </div>
             </div>
